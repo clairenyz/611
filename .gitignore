@@ -1,0 +1,42 @@
+# R files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Output files
+*.pdf
+*.html
+*.log
+*.aux
+*.out
+
+# Data cache
+*.rds
+*.feather
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.envrc
+
+# Temporary files
+*~
+*.swp
+*.swo
+
+# Build artifacts
+report_cache/
+report_files/
+figure/
+
+# Docker
+.dockerignore
