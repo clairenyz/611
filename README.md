@@ -284,15 +284,3 @@ The report includes:
 3. Commit your changes (`git commit -m 'Add amazing analysis'`)
 4. Push to the branch (`git push origin feature/amazing-analysis`)
 5. Open a Pull Request
-
-## License
-
-This project is provided for educational purposes.
-
-## Contact
-
-For questions or issues, please open an issue in the GitHub repository.
-
----
-
-**Note**: This project was created as part of a data science course requirement demonstrating reproducible research practices using Docker, Make, and R Markdown.
