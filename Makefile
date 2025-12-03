@@ -2,7 +2,7 @@
 
 # Variables
 DATA_DIR = data
-REPORT_FILE = report.pdf
+REPORT_FILE = report.html
 RMD_FILE = analysis.Rmd
 DATASET = amazon_bestsellers_2025.csv
 DATASET_URL = https://www.kaggle.com/datasets/sanskar21072005/amazon-best-sellers-2025
@@ -15,7 +15,7 @@ help:
 	@echo "Available targets:"
 	@echo "  make all          - Build the entire project (default)"
 	@echo "  make data         - Download and prepare data"
-	@echo "  make report       - Generate report.pdf"
+	@echo "  make report       - Generate report.html"
 	@echo "  make clean        - Remove generated files"
 	@echo "  make docker-build - Build Docker image"
 	@echo "  make docker-run   - Run Docker container"
@@ -23,7 +23,7 @@ help:
 
 # Install R packages
 install:
-	Rscript -e "install.packages(c('tidyverse', 'knitr', 'rmarkdown', 'ggplot2', 'scales', 'viridis', 'patchwork', 'gt', 'countrycode', 'ggrepel'), repos='https://cloud.r-project.org/')"
+	Rscript -e "install.packages(c('tidyverse', 'knitr', 'rmarkdown', 'ggplot2', 'scales', 'viridis', 'countrycode', 'ggrepel', 'gridExtra', 'broom'), repos='https://cloud.r-project.org/')"
 
 # Create data directory
 $(DATA_DIR):
@@ -46,6 +46,8 @@ data: $(DATA_DIR)
 
 # Report generation (depends on data)
 $(REPORT_FILE): $(RMD_FILE) $(DATA_DIR)/$(DATASET)
+	Rscript -e "pkgs <- c('tidyverse', 'knitr', 'rmarkdown', 'scales', 'viridis', 'countrycode', 'ggrepel', 'gridExtra', 'broom'); new_pkgs <- pkgs[!(pkgs %in% installed.packages()[,'Package'])]; if(length(new_pkgs)) install.packages(new_pkgs, repos='https://cloud.r-project.org/')"
+	Rscript -e "if (packageVersion('xfun') > '0.19') { remove.packages('xfun'); install.packages('https://cran.r-project.org/src/contrib/Archive/xfun/xfun_0.19.tar.gz', repos=NULL, type='source') }"
 	Rscript -e "rmarkdown::render('$(RMD_FILE)', output_file='$(REPORT_FILE)')"
 
 report: $(REPORT_FILE)

@@ -18,29 +18,12 @@ RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     && rm -rf /var/lib/apt/lists/*
 
-# Install R packages
-RUN R -e "install.packages(c(\
-    'tidyverse', \
-    'knitr', \
-    'rmarkdown', \
-    'ggplot2', \
-    'dplyr', \
-    'tidyr', \
-    'readr', \
-    'stringr', \
-    'scales', \
-    'viridis', \
-    'patchwork', \
-    'gt', \
-    'countrycode', \
-    'ggrepel' \
-    ), repos='https://cloud.r-project.org/')"
-
 # Set working directory
 WORKDIR /project
 
-# Copy project files
-COPY . /project/
+# Create install script
+RUN echo '#!/bin/bash\nR -e "if (!require(\"tidyverse\")) install.packages(\"tidyverse\", repos=\"https://cloud.r-project.org/\", dependencies=TRUE)"' > /install-packages.sh && \
+    chmod +x /install-packages.sh
 
 # Default command
 CMD ["/bin/bash"]

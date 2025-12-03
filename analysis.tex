@@ -1,0 +1,790 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{anyfontsize}
+\usepackage{multirow}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={611 Project Amazon Best Sellers 2025: Global Software Market Analysis},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{611 Project Amazon Best Sellers 2025: Global Software Market
+Analysis}
+\author{}
+\date{\vspace{-2.5em}2025-12-02}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\newpage
+
+\section{Executive Summary}\label{executive-summary}
+
+This report analyzes Amazon's bestselling software products across 10
+global markets in 2025, examining 10,000 product records to understand
+pricing strategies, customer satisfaction patterns, and market-specific
+characteristics. Key findings include significant price variations
+across markets, strong correlation between review volume and rankings,
+and distinct clustering patterns in product positioning strategies.
+
+\section{Introduction}\label{introduction}
+
+\subsection{Background}\label{background}
+
+The global software marketplace has experienced unprecedented growth,
+with digital products becoming increasingly important in e-commerce.
+Amazon, as a leading global marketplace, provides insights into consumer
+preferences and market dynamics across diverse geographic regions.
+
+\subsection{Dataset Description}\label{dataset-description}
+
+The Amazon Best Sellers 2025 dataset contains comprehensive information
+about the top 1,000 bestselling software and digital products across 10
+major markets:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Geographic Coverage}: India (IN), United States (US), Canada
+  (CA), Australia (AU), Germany (DE), France (FR), Italy (IT), Spain
+  (ES), Japan (JP), and Mexico (MX)
+\item
+  \textbf{Sample Size}: 10,000 records (1,000 products per country)
+\item
+  \textbf{Time Period}: 2025 bestseller rankings
+\item
+  \textbf{Data Source}: Kaggle - Amazon Best Sellers 2025 Global
+  Software Market Intelligence
+\end{itemize}
+
+\subsubsection{Variables}\label{variables}
+
+\begin{table}[t]
+\caption*{
+{\fontsize{8}{10}\selectfont  Dataset Variables\fontsize{7}{8}\selectfont } \\ 
+{\fontsize{8}{9}\selectfont  Amazon Best Sellers 2025\fontsize{7}{8}\selectfont }
+} 
+\fontsize{7.0pt}{8.0pt}\selectfont
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll}
+\toprule
+Variable Name & Description & Data Type \\ 
+\midrule\addlinespace[2.5pt]
+rank & Bestseller ranking position (1-1000) & Numeric \\ 
+asin & Amazon Standard Identification Number & Categorical \\ 
+product\_title & Complete product name and description & Text \\ 
+product\_price & Price in local currency & Numeric \\ 
+product\_star\_rating & Customer rating (1-5 stars) & Numeric \\ 
+product\_num\_ratings & Total number of customer reviews & Numeric \\ 
+product\_url & Direct Amazon product page link & Text \\ 
+rank\_change\_label & Ranking movement indicator & Categorical \\ 
+country & Two-letter country/market code & Categorical \\ 
+page & Data pagination reference & Numeric \\ 
+\bottomrule
+\end{tabular*}
+\end{table}
+
+The dataset includes both quantitative variables (price, rating, review
+count, rank) and categorical variables (country, product identifier,
+rank change). After data cleaning, we retain 915 complete records for
+analysis.
+
+\subsubsection{Data Quality and
+Preparation}\label{data-quality-and-preparation}
+
+Key preprocessing steps included:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Price normalization}: Extracted numeric values from
+  currency-formatted strings
+\item
+  \textbf{Missing value handling}: Removed records with missing prices
+  or ratings (84 records removed, 91.6\% retention rate)
+\item
+  \textbf{Country name mapping}: Converted ISO2 country codes to full
+  names for clarity
+\item
+  \textbf{Feature engineering}: Created price categories and cleaned
+  review counts
+\end{enumerate}
+
+\newpage
+
+\section{Exploratory Data Analysis}\label{exploratory-data-analysis}
+
+\subsection{Market Overview}\label{market-overview}
+
+\begin{table}[t]
+\caption*{
+{\fontsize{20}{25}\selectfont  Market Summary Statistics\fontsize{7}{8}\selectfont } \\ 
+{\fontsize{14}{17}\selectfont  Comparison across 10 global markets\fontsize{7}{8}\selectfont }
+} 
+\fontsize{7.0pt}{8.0pt}\selectfont
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr}
+\toprule
+Market & Products & Mean Price & Median Price & Mean Rating & Median Reviews \\ 
+\midrule\addlinespace[2.5pt]
+Japan & 90 & 12,300.61 & 9,000.00 & 3.99 & 126 \\ 
+Italy & 96 & 6,126.90 & 3,999.00 & 4.21 & 296 \\ 
+Spain & 97 & 5,387.84 & 3,999.00 & 3.97 & 123 \\ 
+France & 96 & 4,884.58 & 3,162.00 & 4.06 & 162 \\ 
+Germany & 98 & 3,995.46 & 2,955.50 & 4.31 & 1,009 \\ 
+Mexico & 78 & 2,161.55 & 1,433.62 & 4.15 & 105 \\ 
+India & 100 & 1,367.15 & 749.50 & 4.31 & 822 \\ 
+Australia & 67 & 109.33 & 69.99 & 4.24 & 7 \\ 
+Canada & 97 & 80.78 & 40.00 & 4.05 & 105 \\ 
+United States & 96 & 64.16 & 43.49 & 4.11 & 1,224 \\ 
+\bottomrule
+\end{tabular*}
+\end{table}
+
+The market summary reveals substantial variation across regions. Japan
+shows the highest mean price, while India has lower average prices,
+potentially reflecting purchasing power parity differences and market
+positioning strategies.
+
+\newpage
+
+\subsection{Figure 1: Price Distribution Across Global
+Markets}\label{figure-1-price-distribution-across-global-markets}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig1-price-distribution-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  All markets exhibit right-skewed price distributions, indicating
+  concentration of products in lower price ranges with long tails of
+  premium products
+\item
+  The US, Canada, and Australia show similar distribution patterns,
+  suggesting comparable market structures
+\item
+  Japan displays a notably different pattern with more products in
+  higher price ranges
+\item
+  European markets (Germany, France, Italy, Spain) show relatively
+  uniform distributions
+\item
+  India and Mexico have more pronounced concentration in budget
+  categories
+\end{itemize}
+
+\newpage
+
+\subsection{Figure 2: Customer Ratings and Review Volume
+Analysis}\label{figure-2-customer-ratings-and-review-volume-analysis}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig2-ratings-analysis-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  Rating distributions cluster strongly around 4.0-4.5 stars across all
+  markets, indicating generally positive customer satisfaction
+\item
+  Products with higher review volumes tend to show slight regression
+  toward mean ratings
+\item
+  The US and European markets show smoother rating curves, possibly due
+  to more mature review ecosystems
+\item
+  Asian markets (Japan, India) display slightly more variation in the
+  rating-review relationship
+\end{itemize}
+
+\newpage
+
+\subsection{Figure 3: Cross-Market Price
+Comparison}\label{figure-3-cross-market-price-comparison}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig3-price-comparison-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  Japan exhibits the highest median price, followed by Australia and the
+  US
+\item
+  India and Mexico show the lowest median prices, consistent with local
+  economic conditions
+\item
+  The interquartile range varies significantly across markets, with some
+  showing greater price dispersion
+\item
+  All markets display substantial outliers in the premium segment,
+  indicating luxury product availability
+\end{itemize}
+
+\newpage
+
+\subsection{Figure 4: Market Positioning and Product
+Characteristics}\label{figure-4-market-positioning-and-product-characteristics}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig4-market-positioning-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  Weak positive correlation between price and rating in most markets,
+  suggesting price is not a strong predictor of customer satisfaction
+\item
+  High-density areas cluster around mid-price ranges (10-50 USD
+  equivalent) with ratings between 4.0-4.5
+\item
+  Premium products (\textgreater100 USD) show more rating variability
+\item
+  Different markets show parallel pricing strategies, with similar
+  rating distributions at different price points
+\end{itemize}
+
+\newpage
+
+\subsection{Figure 5: Ranking Dynamics and Review
+Engagement}\label{figure-5-ranking-dynamics-and-review-engagement}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig5-ranking-dynamics-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  Strong negative correlation between rank and review count across all
+  markets (better rank = more reviews)
+\item
+  Top 100 products show dramatically higher review volumes, suggesting a
+  ``popularity snowball'' effect
+\item
+  The relationship is consistent across markets, indicating universal
+  importance of social proof
+\item
+  Review volume drops exponentially with rank, particularly after
+  position 200-300
+\end{itemize}
+
+\newpage
+
+\subsection{Figure 6: Price Category Distribution and Market
+Segmentation}\label{figure-6-price-category-distribution-and-market-segmentation}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/fig6-price-segments-1} \end{center}
+
+\textbf{Key Observations:}
+
+\begin{itemize}
+\tightlist
+\item
+  Budget products (\textless\$10) dominate in India, Mexico, and Spain
+\item
+  Premium and luxury products are more prevalent in Japan, US, and
+  Australia
+\item
+  Rating differences across price categories are minimal (all within
+  4.0-4.3 range), suggesting quality is maintained across segments
+\item
+  Mid-range products (\$10-50) form the largest segment in most
+  developed markets
+\end{itemize}
+
+\newpage
+
+\section{Statistical Methods}\label{statistical-methods}
+
+\subsection{Method 1: K-Means Clustering
+Analysis}\label{method-1-k-means-clustering-analysis}
+
+We applied k-means clustering to identify natural groupings of products
+based on their price and rating characteristics. This unsupervised
+learning approach helps reveal market positioning strategies.
+
+\subsubsection{Methodology}\label{methodology}
+
+We standardized price (log-transformed), star rating, and review count
+(log-transformed) before clustering. The optimal number of clusters was
+determined using the elbow method, resulting in k=4 clusters.
+
+\subsubsection{Results}\label{results}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/clustering-viz-1} \end{center}
+
+\begin{table}[t]
+\caption*{
+{\fontsize{20}{25}\selectfont  Cluster Characteristics\fontsize{7}{8}\selectfont } \\ 
+{\fontsize{14}{17}\selectfont  Summary statistics for each identified cluster\fontsize{7}{8}\selectfont }
+} 
+\fontsize{7.0pt}{8.0pt}\selectfont
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}crrrrr}
+\toprule
+Cluster & Size & Mean Price & Mean Rating & Mean Reviews & Median Rank \\ 
+\midrule\addlinespace[2.5pt]
+1 & 194 & 7,264.04 & 3.57 & 92 & 59 \\ 
+2 & 383 & 4,471.58 & 4.31 & 2,062 & 42 \\ 
+3 & 227 & 89.98 & 4.05 & 1,615 & 47 \\ 
+4 & 111 & 2,366.70 & 4.72 & 19 & 55 \\ 
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\textbf{Cluster Interpretation:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Cluster 1}: Budget products with moderate ratings and lower
+  review volumes (n=194)
+\item
+  \textbf{Cluster 2}: Mid-range products with high ratings and strong
+  review engagement (n=383)
+\item
+  \textbf{Cluster 3}: Premium products with variable ratings (n=227)
+\item
+  \textbf{Cluster 4}: Popular budget items with very high review volumes
+  (n=111)
+\end{itemize}
+
+The clustering reveals distinct product positioning strategies in the
+software market. Cluster 2 represents the ``sweet spot'' of mid-price,
+high-quality products with strong customer engagement.
+
+\newpage
+
+\subsection{Method 2: Multiple Linear Regression
+Analysis}\label{method-2-multiple-linear-regression-analysis}
+
+We developed a linear regression model to understand factors influencing
+product ratings, controlling for price, review volume, market, and
+ranking position.
+
+\subsubsection{Model Specification}\label{model-specification}
+
+\[\text{Rating} = \beta_0 + \beta_1 \log(\text{Price}) + \beta_2 \log(\text{Reviews}) + \beta_3 \text{Rank} + \sum_{i} \beta_i \text{Market}_i + \epsilon\]
+
+\begin{table}[t]
+\caption*{
+{\fontsize{20}{25}\selectfont  Regression Results: Factors Affecting Product Ratings\fontsize{7}{8}\selectfont } \\ 
+{\fontsize{14}{17}\selectfont  Top 10 significant predictors (p < 0.05)\fontsize{7}{8}\selectfont }
+} 
+\fontsize{7.0pt}{8.0pt}\selectfont
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr}
+\toprule
+Predictor & Coefficient & Std. Error & t-statistic & p-value \\ 
+\midrule\addlinespace[2.5pt]
+country\_nameSpain & -0.3834 & 0.1086 & -3.5316 & 0.000434 \\ 
+country\_nameJapan & -0.3786 & 0.1180 & -3.2071 & 0.001388 \\ 
+country\_nameCanada & -0.2263 & 0.0772 & -2.9305 & 0.003469 \\ 
+log\_reviews & 0.0581 & 0.0199 & 2.9202 & 0.003585 \\ 
+country\_nameFrance & -0.2992 & 0.1071 & -2.7943 & 0.005311 \\ 
+country\_nameUnited States & -0.2265 & 0.0842 & -2.6902 & 0.007273 \\ 
+rank & -0.0011 & 0.0006 & -1.8940 & 0.058541 \\ 
+country\_nameMexico & -0.1736 & 0.0981 & -1.7688 & 0.077264 \\ 
+country\_nameItaly & -0.1475 & 0.1104 & -1.3358 & 0.181938 \\ 
+log\_price & 0.0383 & 0.0421 & 0.9093 & 0.363421 \\ 
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsubsection{Model Performance}\label{model-performance}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{R-squared}: 0.0795
+\item
+  \textbf{Adjusted R-squared}: 0.0673
+\item
+  \textbf{F-statistic}: 6.49 (p \textless{} 0.001)
+\item
+  \textbf{Residual standard error}: 0.4733
+\end{itemize}
+
+\begin{center}\includegraphics[width=0.9\linewidth]{analysis_files/figure-latex/regression-viz-1} \end{center}
+
+\subsubsection{Key Findings}\label{key-findings}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Review Volume Effect}: Log-transformed review count shows a
+  significant positive effect (β ≈ 0.058), indicating products with more
+  reviews tend to have higher ratings, controlling for other factors.
+\item
+  \textbf{Price Effect}: Price shows a small but statistically
+  significant effect on ratings (β ≈ 0.038), suggesting weak evidence
+  that higher-priced products receive slightly different ratings.
+\item
+  \textbf{Rank Effect}: Bestseller rank shows a negative relationship
+  with rating (β ≈ -0.00108), indicating better-ranked products tend to
+  have higher ratings.
+\item
+  \textbf{Market Effects}: Significant differences exist across markets
+  after controlling for other variables, with some markets showing
+  systematically higher or lower ratings.
+\item
+  \textbf{Model Fit}: The relatively low R² (0.08) suggests that factors
+  beyond price, reviews, and market substantially influence ratings,
+  potentially including product quality, brand reputation, and
+  category-specific factors not captured in this dataset.
+\end{enumerate}
+
+The residual plots indicate reasonable model fit with slight
+heteroscedasticity. The Q-Q plot shows approximate normality of
+residuals with some deviation in the tails.
+
+\newpage
+
+\section{Conclusions}\label{conclusions}
+
+\subsection{Key Findings}\label{key-findings-1}
+
+This analysis of Amazon's 2025 bestselling software products across 10
+global markets reveals several important patterns:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Market Segmentation}: Clear price-based segmentation exists
+  across markets, with developed markets (US, Japan, Australia) showing
+  higher average prices and emerging markets (India, Mexico)
+  concentrated in budget categories. However, customer satisfaction
+  remains consistently high (4.0-4.5 stars) across all segments.
+\item
+  \textbf{Review Volume Drives Success}: Strong negative correlation
+  between bestseller rank and review count suggests that social proof
+  mechanisms are critical for marketplace success. Products in the top
+  100 rankings have dramatically higher review volumes than lower-ranked
+  competitors.
+\item
+  \textbf{Price-Quality Perception}: The weak correlation between price
+  and ratings challenges assumptions that higher prices signal higher
+  quality. Customers appear equally satisfied with budget products as
+  with premium offerings, suggesting successful value delivery across
+  price points.
+\item
+  \textbf{Universal Rating Patterns}: Despite cultural and economic
+  differences, rating distributions are remarkably similar across
+  markets, clustering around 4.0-4.5 stars. This suggests either
+  universal product quality standards or systematic biases in online
+  review systems.
+\item
+  \textbf{Market Positioning Strategies}: K-means clustering identified
+  four distinct product positioning strategies, with the
+  ``mid-range/high-engagement'' cluster representing the optimal balance
+  of price, quality perception, and customer interaction.
+\end{enumerate}
+
+\subsection{Limitations}\label{limitations}
+
+Several limitations should be considered when interpreting these
+findings:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Currency Conversion}: Direct price comparisons across markets
+  using nominal values may not reflect purchasing power parity or local
+  economic conditions
+\item
+  \textbf{Cross-Sectional Nature}: Rankings and ratings represent a
+  snapshot in time and may not capture temporal dynamics or seasonal
+  patterns
+\item
+  \textbf{Selection Bias}: Analysis limited to bestsellers may not
+  generalize to the broader software product ecosystem
+\item
+  \textbf{Unmeasured Variables}: Product category, brand effects,
+  marketing investments, and product features are not captured in the
+  dataset
+\item
+  \textbf{Rating System Differences}: Cultural differences in rating
+  behavior may affect cross-market comparisons
+\end{itemize}
+
+\subsection{Future Directions}\label{future-directions}
+
+Several promising avenues exist for extending this analysis:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Temporal Analysis}: Longitudinal data collection would enable
+  study of ranking dynamics, price evolution, and rating trends over
+  time
+\item
+  \textbf{Text Mining}: Natural language processing of product titles
+  and descriptions could reveal category-specific patterns and
+  successful marketing strategies
+\item
+  \textbf{Network Analysis}: Examining co-purchase patterns or
+  ``customers also bought'' relationships could uncover product
+  ecosystems and substitution effects
+\item
+  \textbf{Causal Inference}: Experimental or quasi-experimental designs
+  could estimate causal effects of pricing strategies, review
+  management, or product positioning on sales performance
+\item
+  \textbf{Category-Specific Analysis}: Deep dives into specific software
+  categories (productivity, gaming, security) might reveal
+  segment-specific success factors
+\item
+  \textbf{Sentiment Analysis}: Incorporating review text sentiment could
+  provide richer understanding of customer satisfaction beyond star
+  ratings
+\item
+  \textbf{Competitive Dynamics}: Analyzing market concentration and
+  competitive positioning within categories could inform strategic
+  decision-making
+\item
+  \textbf{Machine Learning Prediction}: Developing predictive models for
+  bestseller potential based on early performance indicators could guide
+  product launches
+\end{enumerate}
+
+\subsection{Practical Implications}\label{practical-implications}
+
+These findings have several practical implications for software vendors,
+marketplace operators, and researchers:
+
+\begin{itemize}
+\item
+  \textbf{For Vendors}: Encourage early review generation, as review
+  volume strongly predicts rankings. Price positioning should focus on
+  value delivery rather than signaling through premium pricing.
+\item
+  \textbf{For Marketplace Design}: Consider mechanisms to reduce
+  ``rich-get-richer'' dynamics in review accumulation to improve
+  discovery of quality products beyond top rankings.
+\item
+  \textbf{For Researchers}: The consistency of patterns across diverse
+  markets suggests opportunities for cross-market learning and suggests
+  review systems may have universal structural properties worth
+  investigating.
+\end{itemize}
+
+\newpage
+
+\section{Technical Appendix}\label{technical-appendix}
+
+\subsection{Data Processing Details}\label{data-processing-details}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Data loading and cleaning pipeline}
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/amazon\_bestsellers\_2025.csv"}\NormalTok{)}
+
+\NormalTok{data\_clean }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{country\_name =} \FunctionTok{countrycode}\NormalTok{(country, }\StringTok{"iso2c"}\NormalTok{, }\StringTok{"country.name"}\NormalTok{),}
+    \AttributeTok{price\_numeric =} \FunctionTok{parse\_number}\NormalTok{(product\_price),}
+    \AttributeTok{rating\_numeric =} \FunctionTok{as.numeric}\NormalTok{(product\_star\_rating),}
+    \AttributeTok{num\_ratings\_clean =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_remove\_all}\NormalTok{(product\_num\_ratings, }\StringTok{","}\NormalTok{)),}
+    \AttributeTok{price\_category =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      price\_numeric }\SpecialCharTok{\textless{}} \DecValTok{10} \SpecialCharTok{\textasciitilde{}} \StringTok{"Budget (\textless{}$10)"}\NormalTok{,}
+\NormalTok{      price\_numeric }\SpecialCharTok{\textless{}} \DecValTok{50} \SpecialCharTok{\textasciitilde{}} \StringTok{"Mid{-}range ($10{-}50)"}\NormalTok{,}
+\NormalTok{      price\_numeric }\SpecialCharTok{\textless{}} \DecValTok{100} \SpecialCharTok{\textasciitilde{}} \StringTok{"Premium ($50{-}100)"}\NormalTok{,}
+      \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \StringTok{"Luxury (\textgreater{}$100)"}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(price\_numeric), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(rating\_numeric))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Software and Package
+Versions}\label{software-and-package-versions}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 4.5.1 (2025-06-13)
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Sequoia 15.6.1
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## time zone: America/New_York
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] ggrepel_0.9.6     countrycode_1.6.1 gt_1.1.0          patchwork_1.3.2  
+##  [5] viridis_0.6.5     viridisLite_0.4.2 scales_1.4.0      lubridate_1.9.4  
+##  [9] forcats_1.0.1     stringr_1.6.0     dplyr_1.1.4       purrr_1.2.0      
+## [13] readr_2.1.5       tidyr_1.3.1       tibble_3.3.0      ggplot2_4.0.0    
+## [17] tidyverse_2.0.0  
+## 
+## loaded via a namespace (and not attached):
+##  [1] generics_0.1.4     xml2_1.4.1         lattice_0.22-7     stringi_1.8.7     
+##  [5] hms_1.1.4          digest_0.6.37      magrittr_2.0.4     evaluate_1.0.5    
+##  [9] grid_4.5.1         timechange_0.3.0   RColorBrewer_1.1-3 fastmap_1.2.0     
+## [13] Matrix_1.7-4       backports_1.5.0    gridExtra_2.3      mgcv_1.9-4        
+## [17] cli_3.6.5          crayon_1.5.3       rlang_1.1.6        splines_4.5.1     
+## [21] bit64_4.6.0-1      withr_3.0.2        yaml_2.3.10        parallel_4.5.1    
+## [25] tools_4.5.1        tzdb_0.5.0         broom_1.0.10       vctrs_0.6.5       
+## [29] R6_2.6.1           lifecycle_1.0.4    bit_4.6.0          fs_1.6.6          
+## [33] MASS_7.3-65        vroom_1.6.6        pkgconfig_2.0.3    pillar_1.11.1     
+## [37] gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0         xfun_0.54         
+## [41] tidyselect_1.2.1   rstudioapi_0.17.1  knitr_1.50         farver_2.1.2      
+## [45] nlme_3.1-168       htmltools_0.5.8.1  labeling_0.4.3     rmarkdown_2.30    
+## [49] compiler_4.5.1     S7_0.2.0
+\end{verbatim}
+
+\subsection{Data Availability}\label{data-availability}
+
+The dataset used in this analysis is publicly available on Kaggle:
+
+\textbf{Source}:
+\url{https://www.kaggle.com/datasets/sanskar21072005/amazon-best-sellers-2025}
+
+\textbf{Citation}: Amazon Best Sellers 2025 Global Software Market
+Intelligence, Kaggle Dataset (2025)
+
+\subsection{Reproducibility}\label{reproducibility}
+
+All analysis code, documentation, and build instructions are available
+in the project repository. The analysis is fully reproducible using
+Docker and Make:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone }\OperatorTok{\textless{}}\NormalTok{repository{-}url}\OperatorTok{\textgreater{}}
+\BuiltInTok{cd}\NormalTok{ amazon{-}bestsellers{-}analysis}
+\ExtensionTok{docker}\NormalTok{ build . }\AttributeTok{{-}t}\NormalTok{ amazon{-}analysis}
+\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}{-}rm} \AttributeTok{{-}v} \VariableTok{$(}\BuiltInTok{pwd}\VariableTok{)}\NormalTok{:/project amazon{-}analysis make report}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Report Generated}: 2025-12-02 18:17:55.511739
+
+\textbf{Analysis Software}: R version 4.5.1 with tidyverse, ggplot2,
+viridis, patchwork, and gt packages
+
+\end{document}

@@ -1,14 +1,14 @@
 ---
-title: "Amazon Best Sellers 2025: Global Software Market Analysis"
-author: "Data Science Project"
+title: '611 Project Amazon Best Sellers 2025: Global Software Market Analysis'
 date: "`r Sys.Date()`"
-output: 
-  pdf_document:
+output:
+  html_document:
     toc: true
     toc_depth: 2
-    number_sections: true
-    fig_width: 7
-    fig_height: 5
+    toc_float: true
+    theme: cosmo
+    highlight: tango
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -24,10 +24,10 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(scales)
 library(viridis)
-library(patchwork)
-library(gt)
 library(countrycode)
 library(ggrepel)
+library(gridExtra)  # For combining plots (replaces patchwork)
+library(broom)      # For model summaries
 
 # Set theme for all plots
 theme_set(theme_minimal(base_size = 11) +
@@ -61,7 +61,7 @@ The Amazon Best Sellers 2025 dataset contains comprehensive information about th
 
 ```{r load-data}
 # Load the dataset
-data <- read_csv("data/amazon_bestsellers_2025.csv", show_col_types = FALSE)
+data <- read_csv("data/amazon_bestsellers_2025.csv")
 
 # Data cleaning and preparation
 data_clean <- data %>%
@@ -101,22 +101,9 @@ variable_summary <- tribble(
   "page", "Data pagination reference", "Numeric"
 )
 
-variable_summary %>%
-  gt() %>%
-  tab_header(
-    title = "Dataset Variables",
-    subtitle = "Amazon Best Sellers 2025"
-  ) %>%
-  cols_label(
-    Variable = "Variable Name",
-    Description = "Description",
-    Type = "Data Type"
-  ) %>%
-  tab_options(
-    table.font.size = 9,
-    heading.title.font.size = 11,
-    heading.subtitle.font.size = 10
-  )
+knitr::kable(variable_summary, 
+             caption = "Dataset Variables: Amazon Best Sellers 2025",
+             col.names = c("Variable Name", "Description", "Data Type"))
 ```
 
 The dataset includes both quantitative variables (price, rating, review count, rank) and categorical variables (country, product identifier, rank change). After data cleaning, we retain `r nrow(data_clean)` complete records for analysis.
@@ -150,35 +137,11 @@ market_summary <- data_clean %>%
   ) %>%
   arrange(desc(mean_price))
 
-market_summary %>%
-  gt() %>%
-  tab_header(
-    title = "Market Summary Statistics",
-    subtitle = "Comparison across 10 global markets"
-  ) %>%
-  cols_label(
-    country_name = "Market",
-    n_products = "Products",
-    mean_price = "Mean Price",
-    median_price = "Median Price",
-    mean_rating = "Mean Rating",
-    median_reviews = "Median Reviews"
-  ) %>%
-  fmt_number(
-    columns = c(mean_price, median_price),
-    decimals = 2
-  ) %>%
-  fmt_number(
-    columns = mean_rating,
-    decimals = 2
-  ) %>%
-  fmt_number(
-    columns = median_reviews,
-    decimals = 0
-  ) %>%
-  tab_options(
-    table.font.size = 9
-  )
+knitr::kable(market_summary, 
+             digits = 2,
+             caption = "Market Summary Statistics: Comparison across 10 global markets",
+             col.names = c("Market", "Products", "Mean Price", "Median Price", 
+                          "Mean Rating", "Median Reviews"))
 ```
 
 The market summary reveals substantial variation across regions. Japan shows the highest mean price, while India has lower average prices, potentially reflecting purchasing power parity differences and market positioning strategies.
@@ -219,7 +182,7 @@ p1
 
 ## Figure 2: Customer Ratings and Review Volume Analysis
 
-```{r fig2-ratings-analysis, fig.height=7, fig.width=9}
+```{r fig2-ratings-analysis, fig.height=10, fig.width=9}
 # Rating distribution
 p2a <- ggplot(data_clean, aes(x = rating_numeric, fill = country_name)) +
   geom_density(alpha = 0.5) +
@@ -248,13 +211,9 @@ p2b <- data_clean %>%
   ) +
   theme(legend.position = "right")
 
-# Combine plots
-p2a / p2b +
-  plot_annotation(
-    title = "Customer Satisfaction Metrics Analysis",
-    subtitle = "Rating distributions and relationship with review volume",
-    theme = theme(plot.title = element_text(face = "bold", size = 13))
-  )
+# Combine plots using grid.arrange
+grid.arrange(p2a, p2b, ncol = 1, 
+             top = "Customer Satisfaction Metrics Analysis")
 ```
 
 **Key Observations:**
@@ -268,7 +227,7 @@ p2a / p2b +
 
 ## Figure 3: Cross-Market Price Comparison
 
-```{r fig3-price-comparison, fig.height=6, fig.width=9}
+```{r fig3-price-comparison, fig.height=10, fig.width=9}
 # Box plot comparison
 p3a <- ggplot(data_clean, aes(x = reorder(country_name, price_numeric, median), 
                                y = price_numeric, fill = country_name)) +
@@ -300,7 +259,7 @@ p3b <- ggplot(data_clean, aes(x = reorder(country_name, price_numeric, median),
   ) +
   theme(legend.position = "none")
 
-p3a / p3b
+grid.arrange(p3a, p3b, ncol = 1)
 ```
 
 **Key Observations:**
@@ -314,7 +273,7 @@ p3a / p3b
 
 ## Figure 4: Market Positioning and Product Characteristics
 
-```{r fig4-market-positioning, fig.height=7, fig.width=9}
+```{r fig4-market-positioning, fig.height=10, fig.width=9}
 # Scatter plot of price vs rating colored by market
 p4a <- ggplot(data_clean, aes(x = price_numeric, y = rating_numeric, color = country_name)) +
   geom_point(alpha = 0.4, size = 1.5) +
@@ -329,10 +288,10 @@ p4a <- ggplot(data_clean, aes(x = price_numeric, y = rating_numeric, color = cou
   ) +
   theme(legend.position = "bottom")
 
-# Hexbin plot for density
+# Hexbin plot for density (using point density instead of hexbin)
 p4b <- data_clean %>%
   ggplot(aes(x = price_numeric, y = rating_numeric)) +
-  geom_hex(bins = 30) +
+  geom_bin2d(bins = 30) +
   scale_x_log10(labels = dollar_format()) +
   scale_fill_viridis_c(option = "inferno", trans = "log10") +
   labs(
@@ -344,7 +303,7 @@ p4b <- data_clean %>%
   ) +
   theme(legend.position = "right")
 
-p4a / p4b
+grid.arrange(p4a, p4b, ncol = 1)
 ```
 
 **Key Observations:**
@@ -392,7 +351,7 @@ p5
 
 ## Figure 6: Price Category Distribution and Market Segmentation
 
-```{r fig6-price-segments, fig.height=6, fig.width=9}
+```{r fig6-price-segments, fig.height=10, fig.width=9}
 # Price category distribution by market
 price_category_counts <- data_clean %>%
   count(country_name, price_category) %>%
@@ -436,7 +395,7 @@ p6b <- data_clean %>%
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 20, hjust = 1))
 
-p6a + p6b
+grid.arrange(p6a, p6b, ncol = 1)
 ```
 
 **Key Observations:**
@@ -538,31 +497,11 @@ cluster_summary <- data_clustered %>%
   ) %>%
   arrange(cluster)
 
-cluster_summary %>%
-  gt() %>%
-  tab_header(
-    title = "Cluster Characteristics",
-    subtitle = "Summary statistics for each identified cluster"
-  ) %>%
-  cols_label(
-    cluster = "Cluster",
-    n = "Size",
-    mean_price = "Mean Price",
-    mean_rating = "Mean Rating",
-    mean_reviews = "Mean Reviews",
-    median_rank = "Median Rank"
-  ) %>%
-  fmt_number(
-    columns = c(mean_price, mean_rating),
-    decimals = 2
-  ) %>%
-  fmt_number(
-    columns = mean_reviews,
-    decimals = 0
-  ) %>%
-  tab_options(
-    table.font.size = 9
-  )
+knitr::kable(cluster_summary,
+             digits = 2,
+             caption = "Cluster Characteristics: Summary statistics for each identified cluster",
+             col.names = c("Cluster", "Size", "Mean Price", "Mean Rating", 
+                          "Mean Reviews", "Median Rank"))
 ```
 
 **Cluster Interpretation:**
@@ -603,31 +542,10 @@ model_summary <- broom::tidy(model) %>%
   arrange(p.value)
 
 # Display key coefficients
-model_summary %>%
-  head(10) %>%
-  gt() %>%
-  tab_header(
-    title = "Regression Results: Factors Affecting Product Ratings",
-    subtitle = "Top 10 significant predictors (p < 0.05)"
-  ) %>%
-  cols_label(
-    term = "Predictor",
-    estimate = "Coefficient",
-    std.error = "Std. Error",
-    statistic = "t-statistic",
-    p.value = "p-value"
-  ) %>%
-  fmt_number(
-    columns = c(estimate, std.error, statistic),
-    decimals = 4
-  ) %>%
-  fmt_number(
-    columns = p.value,
-    decimals = 6
-  ) %>%
-  tab_options(
-    table.font.size = 9
-  )
+knitr::kable(head(model_summary, 10),
+             digits = c(0, 4, 4, 2, 6),
+             caption = "Regression Results: Top 10 significant predictors (p < 0.05)",
+             col.names = c("Predictor", "Coefficient", "Std. Error", "t-statistic", "p-value"))
 
 # Model fit statistics
 model_fit <- broom::glance(model)
@@ -664,7 +582,7 @@ p_diag2 <- ggplot(reg_data, aes(sample = residuals)) +
     y = "Sample Quantiles"
   )
 
-p_diag1 + p_diag2
+grid.arrange(p_diag1, p_diag2, ncol = 2)
 ```
 
 ### Key Findings
@@ -738,60 +656,3 @@ These findings have several practical implications for software vendors, marketp
 - **For Marketplace Design**: Consider mechanisms to reduce "rich-get-richer" dynamics in review accumulation to improve discovery of quality products beyond top rankings.
 
 - **For Researchers**: The consistency of patterns across diverse markets suggests opportunities for cross-market learning and suggests review systems may have universal structural properties worth investigating.
-
-\newpage
-
-# Technical Appendix
-
-## Data Processing Details
-
-```{r appendix, echo=TRUE, eval=FALSE}
-# Data loading and cleaning pipeline
-data <- read_csv("data/amazon_bestsellers_2025.csv")
-
-data_clean <- data %>%
-  mutate(
-    country_name = countrycode(country, "iso2c", "country.name"),
-    price_numeric = parse_number(product_price),
-    rating_numeric = as.numeric(product_star_rating),
-    num_ratings_clean = as.numeric(str_remove_all(product_num_ratings, ",")),
-    price_category = case_when(
-      price_numeric < 10 ~ "Budget (<$10)",
-      price_numeric < 50 ~ "Mid-range ($10-50)",
-      price_numeric < 100 ~ "Premium ($50-100)",
-      TRUE ~ "Luxury (>$100)"
-    )
-  ) %>%
-  filter(!is.na(price_numeric), !is.na(rating_numeric))
-```
-
-## Software and Package Versions
-
-```{r session-info, echo=TRUE}
-sessionInfo()
-```
-
-## Data Availability
-
-The dataset used in this analysis is publicly available on Kaggle:
-
-**Source**: https://www.kaggle.com/datasets/sanskar21072005/amazon-best-sellers-2025
-
-**Citation**: Amazon Best Sellers 2025 Global Software Market Intelligence, Kaggle Dataset (2025)
-
-## Reproducibility
-
-All analysis code, documentation, and build instructions are available in the project repository. The analysis is fully reproducible using Docker and Make:
-
-```bash
-git clone <repository-url>
-cd amazon-bestsellers-analysis
-docker build . -t amazon-analysis
-docker run --rm -v $(pwd):/project amazon-analysis make report
-```
-
----
-
-**Report Generated**: `r Sys.time()`
-
-**Analysis Software**: R version `r getRversion()` with tidyverse, ggplot2, viridis, patchwork, and gt packages
